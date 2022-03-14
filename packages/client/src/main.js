@@ -24,6 +24,9 @@ fetchApi.get('/api/sessions')
       store.dispatch('users/login', data.user);
       store.dispatch('grants/fetchInterestedCodes');
     }
+    // const app = createApp(App);
+    // app.use(store);
+    // app.mount('#app');
     new Vue({
       router,
       store,

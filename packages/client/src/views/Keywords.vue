@@ -16,7 +16,7 @@
       </b-button>
     </template>
   </b-table>
-  <AddKeywordModal :showModal.sync="showAddKeywordModal"/>
+  <AddKeywordModal v-model:showModal="showAddKeywordModal"/>
 </section>
 </template>
 

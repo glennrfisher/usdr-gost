@@ -14,7 +14,7 @@
         <b-form-group
           label-for="name-input"
         >
-          <template slot="label">Name</template>
+          <template v-slot:label>Name</template>
           <b-form-input
               autofocus
               id="name-input"

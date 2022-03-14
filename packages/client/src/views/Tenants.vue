@@ -15,7 +15,7 @@
     </template>
   </b-table>
   <EditTenantModal
-     :tenant.sync="editingTenant"
+     v-model:tenant="editingTenant"
   />
 </section>
 </template>

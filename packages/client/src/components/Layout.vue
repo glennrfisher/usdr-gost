@@ -37,7 +37,7 @@
       <router-view />
     </div>
     <ProfileSettingsModal
-     :showModal.sync="showProfileSettingModal"/>
+     v-model:showModal="showProfileSettingModal"/>
   </div>
 </template>
 

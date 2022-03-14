@@ -1,4 +1,4 @@
-<!-- eslint-disable max-len -->
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div>
     <b-modal
@@ -15,7 +15,7 @@
           :state="!$v.formData.name.$invalid"
           label-for="name-input"
         >
-          <template slot="label">Name</template>
+          <template v-slot:label>Name</template>
           <b-form-input
               autofocus
               id="name-input"
@@ -30,7 +30,7 @@
           :state="!$v.formData.abbreviation.$invalid"
           label-for="abbreviation-input"
         >
-          <template slot="label">Abbreviation</template>
+          <template v-slot:label>Abbreviation</template>
           <b-form-input
               id="abbreviation-input"
               type="text"
@@ -46,7 +46,7 @@
           label-for="agency-input"
           invalid-feedback="Must select a parent agency"
         >
-          <template slot="label">Parent Agency</template>
+          <template v-slot:label>Parent Agency</template>
           <v-select :options="agencies" label="name" :value="formData.parentAgency" v-model="formData.parentAgency">
             <template #search="{attributes, events}">
               <input
@@ -63,8 +63,8 @@
           label-for="warningThreshold-input"
           invalid-feedback="Warning Threshold must be 2 or greater"
         >
-        <template slot="label">Close Date <span class="text-warning">Warning</span> Threshold</template>
-        <template slot="description">How many days out to show grant close dates with <span class="text-warning">warning</span> status</template>
+        <template v-slot:label>Close Date <span class="text-warning">Warning</span> Threshold</template>
+        <template v-slot:description>How many days out to show grant close dates with <span class="text-warning">warning</span> status</template>
           <b-form-input
             id="warningThreshold-input"
             type="number"
@@ -78,8 +78,8 @@
           label-for="dangerThreshold-input"
           invalid-feedback="Danger Threshold must be greater than zero and less than Warning Threshold"
         >
-        <template slot="label">Close Date <span class="text-danger">Danger</span> Threshold</template>
-        <template slot="description">How many days out to show grant close dates with <span class="text-danger">danger</span> status</template>
+        <template v-slot:label>Close Date <span class="text-danger">Danger</span> Threshold</template>
+        <template v-slot:description>How many days out to show grant close dates with <span class="text-danger">danger</span> status</template>
           <b-form-input
             id="dangerThreshold-input"
             type="number"

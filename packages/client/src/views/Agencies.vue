@@ -23,10 +23,10 @@
     </template>
   </b-table>
   <EditAgencyModal
-     :agency.sync="editingAgency"
+     v-model:agency="editingAgency"
   />
   <AddAgencyModal
-  :showDialog.sync="showAddAgencyModal"/>
+  v-model:showDialog="showAddAgencyModal"/>
 </section>
 </template>
 

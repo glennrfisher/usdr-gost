@@ -16,7 +16,7 @@
       </b-button>
     </template>
   </b-table>
-  <AddUserModal :showModal.sync="showAddUserModal"/>
+  <AddUserModal v-model:showModal="showAddUserModal"/>
 </section>
 </template>
 

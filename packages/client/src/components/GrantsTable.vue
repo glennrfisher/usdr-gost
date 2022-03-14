@@ -52,7 +52,7 @@
         >{{ grants.length }} of {{ totalRows }}</b-button
       >
     </b-row>
-    <GrantDetails :selected-grant.sync="selectedGrant" />
+    <GrantDetails v-model:selected-grant="selectedGrant" />
   </section>
 </template>
 
