@@ -1,3 +1,6 @@
+import '@babel/polyfill'
+import 'mutationobserver-shim'
+import './plugins/bootstrap-vue'
 import Vue from 'vue';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import vSelect from 'vue-select';
@@ -6,6 +9,7 @@ import Vuelidate from 'vuelidate';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+
 
 const fetchApi = require('@/helpers/fetchApi');
 

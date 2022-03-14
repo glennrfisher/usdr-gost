@@ -1,6 +1,5 @@
 module.exports = {
   devServer: {
-    progress: false,
   },
   chainWebpack: (config) => {
     config.resolve.alias.set('vue', '@vue/compat');
