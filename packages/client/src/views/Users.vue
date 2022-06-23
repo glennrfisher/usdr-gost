@@ -11,7 +11,7 @@
   </b-row>
   <b-table sticky-header="600px" hover :items="formattedUsers" :fields="fields">
     <template #cell(actions)="row">
-      <b-button variant="danger" class="mr-1" size="sm" @click="deleteUser(row.item.id)">
+      <b-button variant="danger" v-if="row.item.id !== loggedInUser.id" class="mr-1" size="sm" @click="deleteUser(row.item.id)">
         <b-icon icon="trash-fill" aria-hidden="true"></b-icon>
       </b-button>
     </template>
