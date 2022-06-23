@@ -61,10 +61,11 @@ export default {
     };
   },
   mounted() {
-    this.fetchUsers();
+    this.setup();
   },
   computed: {
     ...mapGetters({
+      loggedInUser: 'users/loggedInUser',
       users: 'users/users',
       selectedAgency: 'users/selectedAgency',
     }),
@@ -85,10 +86,12 @@ export default {
   methods: {
     ...mapActions({
       fetchUsers: 'users/fetchUsers',
+      fetchTenantUsers: 'users/fetchTenantUsers',
       deleteUser: 'users/deleteUser',
     }),
     setup() {
-      this.fetchUsers();
+      // this.fetchUsers();
+      this.fetchTenantUsers(this.loggedInUser.tenant_id);
     },
     openAddUserModal() {
       this.showAddUserModal = true;

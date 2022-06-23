@@ -36,6 +36,11 @@ router.get('/', requireAdminUser, async (req, res) => {
     res.json(users);
 });
 
+router.get('/:tenantId', requireAdminUser, async (req, res) => {
+    const users = await db.getTenantUsers(req.params.tenantId);
+    res.json(users);
+});
+
 router.delete('/:userId', requireAdminUser, async (req, res) => {
     const userToDelete = await db.getUser(req.params.userId);
 

@@ -9,7 +9,7 @@
       </div>
     </b-col>
   </b-row>
-  <b-table sticky-header="600px" hover :items="formattedAgencies" :fields="fields">
+  <b-table sticky-header="600px" hover :items="formattedTenantAgencies" :fields="fields">
       <template #cell(warning_threshold)="row">
         {{row.item.warning_threshold}} days
       </template>
@@ -76,9 +76,15 @@ export default {
   computed: {
     ...mapGetters({
       agencies: 'agencies/agencies',
+      tenantAgencies: 'agencies/tenantAgencies',
       userRole: 'users/userRole',
       selectedAgency: 'users/selectedAgency',
     }),
+    formattedTenantAgencies() {
+      return this.tenantAgencies.map((agency) => ({
+        ...agency,
+      }));
+    },
     formattedAgencies() {
       return this.agencies.map((agency) => ({
         ...agency,

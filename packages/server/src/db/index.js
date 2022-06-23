@@ -57,6 +57,44 @@ async function getUsers(rootAgencyId) {
     });
 }
 
+async function getTenantUsers(tenantId) {
+    console.log('db getTenantUsers', tenantId);
+    // const subAgencies = await getAgencies(rootAgencyId);
+
+    const users = await knex('users')
+        .select(
+            'users.*',
+            'roles.name as role_name',
+            'roles.rules as role_rules',
+            'agencies.name as agency_name',
+            'agencies.abbreviation as agency_abbreviation',
+            'agencies.parent as agency_parent_id_id',
+        )
+        .leftJoin('roles', 'roles.id', 'users.role_id')
+        .leftJoin('agencies', 'agencies.id', 'users.agency_id')
+        .where('users.tenant_id', tenantId);
+        // .whereIn('agencies.id', subAgencies.map((subAgency) => subAgency.id));
+    return users.map((user) => {
+        const u = { ...user };
+        if (user.role_id) {
+            u.role = {
+                id: user.role_id,
+                name: user.role_name,
+                rules: user.role_rules,
+            };
+        }
+        if (user.agency_id !== null) {
+            u.agency = {
+                id: user.agency_id,
+                name: user.agency_name,
+                abbreviation: user.agency_abbreviation,
+                agency_parent_id: user.agency_parent_id,
+            };
+        }
+        return u;
+    });
+}
+
 async function deleteUser(id) {
     return knex('users')
         .where('id', id)
@@ -462,6 +500,12 @@ async function getAgencies(rootAgency) {
     return result.rows;
 }
 
+async function getTenantAgencies(tenantId) {
+    return knex('agencies')
+        .select('*')
+        .where('tenant_id', tenantId);
+}
+
 // Use agency id for lookup for now
 async function getTenantByMainAgencyId(main_agency_id) {
     const query = `SELECT id, display_name, main_agency_id 
@@ -622,8 +666,10 @@ module.exports = {
     markAccessTokenUsed,
     getAgency,
     getAgencies,
+    getTenantAgencies,
     getTenantByMainAgencyId,
     getTenant,
+    getTenantUsers,
     getAgencyEligibilityCodes,
     setAgencyEligibilityCodeEnabled,
     getKeyword,

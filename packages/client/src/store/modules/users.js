@@ -53,7 +53,13 @@ export default {
       localStorage.setItem('selectedAgencyId', agencyId);
     },
     fetchUsers({ commit }) {
+      console.log('fetchUsers');
       return fetchApi.get('/api/organizations/:organizationId/users')
+        .then((data) => commit('SET_USERS', data));
+    },
+    fetchTenantUsers({ commit }, tenantId) {
+      console.log('fetchTenantUsers action =>', tenantId);
+      return fetchApi.get(`/api/organizations/:organizationId/users/${tenantId}`)
         .then((data) => commit('SET_USERS', data));
     },
     async createUser({ dispatch }, user) {

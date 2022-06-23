@@ -3,16 +3,20 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const { requireAdminUser, requireUser, isPartOfAgency } = require('../lib/access-helpers');
 const {
-    getAgency, getAgencies, setAgencyThresholds, createAgency,
+    getAgency, getAgencies, getTenantAgencies, setAgencyThresholds, createAgency,
 } = require('../db');
 
 router.get('/', requireUser, async (req, res) => {
     const { user } = req.session;
     let response;
     if (user.role.name === 'admin') {
-        response = await getAgencies(req.session.selectedAgency);
+        const agencies = await getAgencies(req.session.selectedAgency);
+        const tenantAgencies = await getTenantAgencies(user.tenant_id);
+        response = { agencies, tenantAgencies };
+        // response = await getAgencies(req.session.selectedAgency);
     } else {
-        response = await getAgency(req.session.selectedAgency);
+        const agencies = await getAgency(req.session.selectedAgency);
+        response = { agencies };
     }
     res.json(response);
 });

@@ -3,6 +3,7 @@ const fetchApi = require('@/helpers/fetchApi');
 function initialState() {
   return {
     agencies: [],
+    tenantAgencies: [],
   };
 }
 
@@ -11,6 +12,7 @@ export default {
   state: initialState,
   getters: {
     agencies: (state) => state.agencies,
+    tenantAgencies: (state) => state.tenantAgencies,
   },
   actions: {
     fetchAgencies({ commit }) {
@@ -30,8 +32,10 @@ export default {
     },
   },
   mutations: {
-    SET_AGENCIES(state, agencies) {
+    SET_AGENCIES(state, data) {
+      const { agencies, tenantAgencies } = data;
       state.agencies = agencies;
+      state.tenantAgencies = tenantAgencies;
     },
   },
 };
