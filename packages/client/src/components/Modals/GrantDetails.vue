@@ -76,11 +76,16 @@
       <br/>
       <b-row>
         <b-col>
-          <multiselect v-model="selectedAgencies" :options="agencies"
-          :multiple="true" :close-on-select="false"
-          :clear-on-select="false"
-          placeholder="Select agencies" label="name"
-          track-by="id">
+          <multiselect
+            v-model="selectedAgencies"
+            :options="tenantAgencies"
+            :multiple="true"
+            :close-on-select="false"
+            :clear-on-select="false"
+            placeholder="Select agencies"
+            label="name"
+            track-by="id"
+          >
           </multiselect>
         </b-col>
         <b-col>
@@ -158,12 +163,15 @@ export default {
     };
   },
   mounted() {
+    this.setup();
   },
   computed: {
     ...mapGetters({
       agency: 'users/agency',
       selectedAgencyId: 'users/selectedAgencyId',
       agencies: 'agencies/agencies',
+      tenantAgencies: 'agencies/tenantAgencies',
+      loggedInUser: 'users/loggedInUser',
       users: 'users/users',
       interestedCodes: 'grants/interestedCodes',
     }),
@@ -184,8 +192,8 @@ export default {
     async selectedGrant() {
       this.showDialog = Boolean(this.selectedGrant);
       if (this.selectedGrant) {
-        if (!this.agencies.length) {
-          this.fetchAgencies();
+        if (!this.tenantAgencies.length) {
+          this.fetchTenantAgencies(this.loggedInUser.tenant_id);
         }
         if (!this.alreadyViewed) {
           this.markGrantAsViewed();
@@ -204,6 +212,7 @@ export default {
       unassignAgenciesToGrantAction: 'grants/unassignAgenciesToGrant',
       fetchUsers: 'users/fetchUsers',
       fetchAgencies: 'agencies/fetchAgencies',
+      fetchTenantAgencies: 'agencies/fetchTenantAgencies',
     }),
     titleize,
     debounceSearchInput: debounce(function bounce(newVal) {
@@ -211,6 +220,9 @@ export default {
     }, 500),
     async markGrantAsViewed() {
       await this.markGrantAsViewedAction({ grantId: this.selectedGrant.grant_id, agencyId: this.selectedAgencyId });
+    },
+    setup() {
+      this.fetchTenantAgencies(this.loggedInUser.tenant_id);
     },
     async markGrantAsInterested() {
       if (this.selectedInterestedCode !== null) {
