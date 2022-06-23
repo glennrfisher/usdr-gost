@@ -34,12 +34,12 @@
 exports.seed = async (knex) => {
     const tenantId = await knex('tenants').returning('id').insert(
         {
-            display_name: 'State of Nevada',
+            display_name: 'State of Nevada Test',
         },
     );
     const agencyId = await knex('agencies').returning('id').insert({
         id: tenantId[0].id,
-        abbreviation: 'Administration',
+        abbreviation: 'AGO',
         name: 'Adminstration: Grant Office',
         parent: 0,
         main_agency_id: 0,
