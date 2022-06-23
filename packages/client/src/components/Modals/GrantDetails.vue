@@ -1,17 +1,19 @@
 <!-- eslint-disable max-len -->
 <template>
-    <b-modal v-model="showDialog"
-    ok-only
-    :title="selectedGrant && selectedGrant.title"
-    @hide="resetSelectedGrant"
-    scrollable
-    size="lg"
-    header-bg-variant="primary"
-    header-text-variant="light"
-    body-bg-variant="light"
-    body-text-variant="dark"
-    footer-bg-variant="dark"
-    footer-text-variant="light">
+    <b-modal
+      v-model="showDialog"
+      ok-only
+      :title="selectedGrant && selectedGrant.title"
+      @hide="resetSelectedGrant"
+      scrollable
+      size="lg"
+      header-bg-variant="primary"
+      header-text-variant="light"
+      body-bg-variant="light"
+      body-text-variant="dark"
+      footer-bg-variant="dark"
+      footer-text-variant="light"
+    >
     <div v-if="selectedGrant">
       <b-row>
         <b-col cols="9">
@@ -74,7 +76,7 @@
         </b-col>
       </b-row>
       <br/>
-      <b-row>
+      <b-row align-v="center mb-3">
         <b-col>
           <multiselect
             v-model="selectedAgencies"
@@ -88,7 +90,7 @@
           >
           </multiselect>
         </b-col>
-        <b-col>
+        <b-col cols="2" class="text-right">
           <b-button variant="outline-success" @click="assignAgenciesToGrant">Assign</b-button>
         </b-col>
       </b-row>
@@ -222,7 +224,7 @@ export default {
       await this.markGrantAsViewedAction({ grantId: this.selectedGrant.grant_id, agencyId: this.selectedAgencyId });
     },
     setup() {
-      this.fetchTenantAgencies(this.loggedInUser.tenant_id);
+      this.fetchAgencies();
     },
     async markGrantAsInterested() {
       if (this.selectedInterestedCode !== null) {
