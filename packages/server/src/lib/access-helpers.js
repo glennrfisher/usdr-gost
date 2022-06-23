@@ -1,7 +1,7 @@
 const { getUser, getTenant, getAgency } = require('../db');
 
 class AgencyTenantMismatchError extends Error {
-  // ...
+    // ...
 }
 
 function isPartOfAgency(agencies, agencyId) {
@@ -10,14 +10,13 @@ function isPartOfAgency(agencies, agencyId) {
 
 async function validateAgencyPartOfTenant(tenantId, agencyId) {
     console.log('validate 1');
-    const agency = await getAgency(agencyId)
-    const tenant = await getTenant(tenantId)
+    const agency = await getAgency(agencyId);
+    const tenant = await getTenant(tenantId);
 
     console.log('validate 2');
     if (agency.tenant_id !== tenant.id) {
-        throw new AgencyTenantMismatchError()
+        throw new AgencyTenantMismatchError();
     }
-
 }
 
 /**
@@ -30,10 +29,10 @@ async function validateAgencyPartOfTenant(tenantId, agencyId) {
 async function isAuthorized(userId, agencyId) {
     const user = await getUser(userId);
 
-    if (user.role_name == 'admin') {
+    if (user.role_name === 'admin') {
         return isPartOfAgency(user.agency.subagencies, agencyId);
-    } else if (user.role_name == 'staff') {
-        return user.agency_id === agencyId
+    } if (user.role_name === 'staff') {
+        return user.agency_id === agencyId;
     }
 }
 
@@ -57,18 +56,17 @@ async function requireAdminUser(req, res, next) {
     const requestAgency = Number(paramAgencyId);
 
     if (!Number.isNaN(requestAgency)) {
-
         console.log('admin 4');
-        try { await validateAgencyPartOfTenant(user.tenant_id, requestAgency)
-        } catch(e) {
+        try {
+            await validateAgencyPartOfTenant(user.tenant_id, requestAgency);
+        } catch (e) {
             console.log(e);
             if (e instanceof AgencyTenantMismatchError) {
                 res.sendStatus(403);
                 return;
-            } else {
-                res.sendStatus(500);
-                return;
             }
+            res.sendStatus(500);
+            return;
         }
 
         console.log('admin 5');
@@ -86,8 +84,9 @@ async function requireAdminUser(req, res, next) {
         // but still fine to check it since that's the agency we're going to end up using for querying
 
         console.log('admin 7');
-        try { await validateAgencyPartOfTenant(user.tenant_id, user.agency_id)
-        } catch(e) {
+        try {
+            await validateAgencyPartOfTenant(user.tenant_id, user.agency_id);
+        } catch (e) {
             if (e instanceof AgencyTenantMismatchError) {
                 res.sendStatus(403);
             } else {
@@ -102,7 +101,6 @@ async function requireAdminUser(req, res, next) {
 }
 
 async function requireUser(req, res, next) {
-
     console.log('we are here 1');
     if (!req.signedCookies.userId) {
         res.sendStatus(403);
@@ -132,8 +130,9 @@ async function requireUser(req, res, next) {
     console.log('we are here');
 
     if (!Number.isNaN(requestAgency)) {
-        try { await validateAgencyPartOfTenant(user.tenant_id, requestAgency)
-        } catch(e) {
+        try {
+            await validateAgencyPartOfTenant(user.tenant_id, requestAgency);
+        } catch (e) {
             if (e instanceof AgencyTenantMismatchError) {
                 res.sendStatus(403);
             } else {
@@ -149,8 +148,9 @@ async function requireUser(req, res, next) {
 
     // Redundant because user's agency and user's tenant should never be different
     // but still fine to check it since that's the agency we're going to end up using for querying
-    try { await validateAgencyPartOfTenant(user.tenant_id, user.agency_id)
-    } catch(e) {
+    try {
+        await validateAgencyPartOfTenant(user.tenant_id, user.agency_id);
+    } catch (e) {
         if (e instanceof AgencyTenantMismatchError) {
             res.sendStatus(403);
         } else {
