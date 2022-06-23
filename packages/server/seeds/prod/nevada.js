@@ -4,6 +4,8 @@
  * and run
  * npx knex seed:run --specific=nevada.js --env envinronment-goes-here
  * to seed the tenant.
+ * locally make sure to run
+ * export POSTGRES_URL="postgresql://localhost:5432/usdr_grants
  */
 
 // const tenants = [
@@ -38,22 +40,20 @@ exports.seed = async (knex) => {
         },
     );
     const agencyId = await knex('agencies').returning('id').insert({
-        id: tenantId[0].id,
         abbreviation: 'AGO',
-        name: 'Adminstration: Grant Office',
+        name: 'Adminstration: Grants Office',
         parent: 0,
         main_agency_id: 0,
-        tenant_id: tenantId[0].id,
+        tenant_id: tenantId[0],
     });
-
     await knex('users').insert({
         email: 'grants.dev+nv@usdigitalresponse.org',
         name: 'USDR Grants Dev',
-        agency_id: agencyId[0].id,
+        agency_id: agencyId[0],
         role_id: 1,
-        tenant_id: tenantId[0].id,
+        tenant_id: tenantId[0],
     });
 
-    await knex('agencies').where('id', agencyId[0].id).update({ main_agency_id: agencyId[0].id });
-    await knex('tenants').where('id', tenantId[0].id).update({ main_agency_id: agencyId[0].id });
+    await knex('agencies').where('id', agencyId[0]).update({ main_agency_id: agencyId[0] });
+    await knex('tenants').where('id', tenantId[0]).update({ main_agency_id: agencyId[0] });
 };
