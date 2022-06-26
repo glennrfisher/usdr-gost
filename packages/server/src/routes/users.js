@@ -17,6 +17,7 @@ router.post('/', requireAdminUser, async (req, res, next) => {
             name: req.body.name,
             role_id: req.body.role,
             agency_id: req.body.agency,
+            tenant_id: req.body.tenant,
         };
         const result = await db.createUser(user);
         res.json({ user: result });

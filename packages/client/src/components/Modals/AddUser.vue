@@ -76,6 +76,7 @@ export default {
         email: null,
         role: null,
         agency: null,
+        tenant: null,
       },
     };
   },
@@ -104,6 +105,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      loggedInUser: 'users/loggedInUser',
       roles: 'roles/roles',
       agencies: 'agencies/agencies',
     }),
@@ -149,6 +151,7 @@ export default {
       if (this.$v.formData.$invalid) {
         return;
       }
+      this.formData.tenant = this.loggedInUser.tenant_id;
       await this.createUser(this.formData);
       // Push the name to submitted names
       // Hide the modal manually
