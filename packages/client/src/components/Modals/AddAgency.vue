@@ -110,6 +110,7 @@ export default {
         warningThreshold: null,
         dangerThreshold: null,
         parentAgency: null,
+        tenant: null,
       },
     };
   },
@@ -172,6 +173,7 @@ export default {
       const body = {
         ...this.formData,
         parentId: this.formData.parentAgency.id,
+        tenant: this.loggedInUser.tenant_id,
       };
       await this.createAgency(body);
       this.resetModal();
