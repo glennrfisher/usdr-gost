@@ -79,7 +79,7 @@ async function getTenantAgencies(tenantId) {
 }
 
 async function createAgency({
-    name, abbreviation, parent, warning_threshold, danger_threshold, tenant,
+    name, abbreviation, parent, warning_threshold, danger_threshold, main_agency_id, tenant,
 }) {
     // seeded agencies with hardcoded ids will make autoicrement fail since it doesnt
     // know which is the next id
@@ -91,6 +91,7 @@ async function createAgency({
             abbreviation,
             warning_threshold,
             danger_threshold,
+            main_agency_id,
             tenant_id: tenant,
         });
 }
