@@ -96,23 +96,26 @@ async function createAgency({
         });
 }
 
-async function deleteAgency(
-    id, parent, name, abbreviation, warning_threshold, danger_threshold,
-) {
-    // seeded agencies with hardcoded ids will make autoicrement fail since it doesnt
-    // know which is the next id
-    console.log(`indexjs   ${id}`);
-    await knex.raw('select setval(\'agencies_id_seq\', max(id)) from agencies');
-    // console.log('sdfghjkjhg   ' + knex(TABLES.agencies.where(id)));
-    return knex(TABLES.agencies)
-        .where({
-            id,
-            parent,
-            name,
-            abbreviation,
-            warning_threshold,
-            danger_threshold,
-        })
+// async function deleteAgency(
+//     id, parent, name, abbreviation, warning_threshold, danger_threshold,
+// ) {
+//     console.log(`indexjs   ${id}`);
+//     // console.log('sdfghjkjhg   ' + knex(TABLES.agencies.where(id)));
+//     return knex(TABLES.agencies)
+//         .where({
+//             id,
+//             parent,
+//             name,
+//             abbreviation,
+//             warning_threshold,
+//             danger_threshold,
+//         })
+//         .del();
+// }
+
+async function deleteAgency(id) {
+    return knex('agencies')
+        .where('id', id)
         .del();
 }
 
