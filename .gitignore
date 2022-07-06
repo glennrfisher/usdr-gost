@@ -110,3 +110,5 @@ dist
 
 packages/server/src/static/forms/generated
 .tool-versions
+
+*.env

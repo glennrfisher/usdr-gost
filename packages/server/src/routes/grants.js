@@ -229,6 +229,19 @@ router.put('/:grantId/interested/:agencyId', requireUser, async (req, res) => {
     res.json(interestedAgencies);
 });
 
+router.delete('/:grantId/interested/:agencyId', requireUser, async (req, res) => {
+    const { user } = req.session;
+    const { grantId } = req.params;
+    const { agencyIds } = req.body;
+    if (!agencyIds.every((agencyId) => isPartOfAgency(user.agency.subagencies, agencyId))) {
+        res.sendStatus(403);
+        return;
+    }
+
+    await db.unmarkGrantAsInterested({ grantId, agencyIds, userId: user.id });
+    res.json({});
+});
+
 const formFields = {
     nevada_spoc: {
         PDFTextField: {
