@@ -22,18 +22,18 @@ export default {
       await fetchApi.post('/api/organizations/:organizationId/agencies/', body);
       dispatch('fetchAgencies');
     },
-    deleteAgency({ dispatch }, {
-      agencyId, parent, name, abbreviation, warningThreshold, dangerThreshold,
-    }) {
+    async deleteAgency({ dispatch }, agencyId) { // { agencyId, parent, name, abbreviation, warningThreshold, dangerThreshold, }
       // console.log(`agencies      ${agencyId}`);
-      fetchApi.deleteRequest(`/api/organizations/:organizationId/agencies/del/${agencyId}`, {
-        parent,
-        name,
-        abbreviation,
-        warningThreshold,
-        dangerThreshold,
-      });
-      dispatch('fetchAgencies');
+      await fetchApi.deleteRequest(`/api/organizations/:organizationId/agencies/del/${agencyId}`);
+      await dispatch('fetchAgencies');
+      // fetchApi.deleteRequest(`/api/organizations/:organizationId/agencies/del/${agencyId}`, {
+      //   parent,
+      //   name,
+      //   abbreviation,
+      //   warningThreshold,
+      //   dangerThreshold,
+      // });
+      // dispatch('fetchAgencies');
     },
     async updateThresholds({ dispatch }, { agencyId, warningThreshold, dangerThreshold }) {
       await fetchApi.put(`/api/organizations/:organizationId/agencies/${agencyId}`, {
