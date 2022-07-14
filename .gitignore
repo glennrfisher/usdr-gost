@@ -112,4 +112,3 @@ dist
 .DS_Store
 
 packages/server/src/static/forms/generated
-.tool-versions

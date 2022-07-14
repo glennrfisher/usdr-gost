@@ -66,6 +66,8 @@ router.get('/', requireUser, async (req, res) => {
             agencyCriteria,
             interestedByUser: req.query.interestedByMe ? req.signedCookies.userId : null,
             assignedToAgency: req.query.assignedToAgency ? req.query.assignedToAgency : null,
+            positiveInterest: req.query.positiveInterest ? true : null,
+            rejected: req.query.rejected ? true : null,
         },
     });
     console.log('grants fetched');
@@ -94,6 +96,8 @@ router.get('/exportCSV', requireUser, async (req, res) => {
             agencyCriteria,
             interestedByUser: req.query.interestedByMe ? req.signedCookies.userId : null,
             assignedToAgency: req.query.assignedToAgency ? req.query.assignedToAgency : null,
+            positiveInterest: req.query.positiveInterest ? true : null,
+            rejected: req.query.rejected ? true : null,
         },
     });
 
@@ -217,7 +221,7 @@ router.put('/:grantId/interested/:agencyId', requireUser, async (req, res) => {
         res.sendStatus(403);
         return;
     }
-
+    
     await db.markGrantAsInterested({
         grantId,
         agencyId,
@@ -227,6 +231,19 @@ router.put('/:grantId/interested/:agencyId', requireUser, async (req, res) => {
 
     const interestedAgencies = await db.getInterestedAgencies({ grantIds: [grantId], agencies: [agencyId] });
     res.json(interestedAgencies);
+});
+
+router.delete('/:grantId/interested/:agencyId', requireUser, async (req, res) => {
+    const { user } = req.session;
+    const { grantId } = req.params;
+    const { agencyIds } = req.body;
+    if (!agencyIds.every((agencyId) => isPartOfAgency(user.agency.subagencies, agencyId))) {
+        res.sendStatus(403);
+        return;
+    }
+
+    await db.unmarkGrantAsInterested({ grantId, agencyIds, userId: user.id });
+    res.json({});
 });
 
 const formFields = {
