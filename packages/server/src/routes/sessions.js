@@ -35,7 +35,13 @@ router.get('/', async (req, res) => {
                 await markAccessTokenUsed(passcode);
             }
             res.cookie('userId', token.user_id, { signed: true });
-            res.redirect(process.env.WEBSITE_DOMAIN || '/');
+
+            if (req.query.redirect_to) {
+                // This is a hack which the frontend will take care of validating
+                res.redirect(`/#/?redirect_to=${req.query.redirect_to}`);
+            } else {
+                res.redirect(process.env.WEBSITE_DOMAIN || '/');
+            }
         }
     } else if (req.signedCookies && req.signedCookies.userId) {
         const user = await getUser(req.signedCookies.userId);
@@ -64,7 +70,8 @@ router.post('/', async (req, res, next) => {
     try {
         const passcode = await createAccessToken(email);
         const apiDomain = process.env.API_DOMAIN || req.headers.origin;
-        await sendPasscode(email, passcode, apiDomain);
+        const { redirectTo } = req.body;
+        await sendPasscode(email, passcode, apiDomain, redirectTo);
         res.json({
             success: true,
             message: `Email sent to ${email}. Check your inbox`,

@@ -89,7 +89,7 @@ Set environment variable pointing to local postgres DB, this is used for migrati
 
 4.1). Setup Gmail
 
-Visit: https://myaccount.google.com/u/0/apppassword and set up an "App Password" (see screenshot below) 
+Visit [this google article](https://support.google.com/accounts/answer/185833?hl=en) and create an "App Password" (see screenshot below) 
 
 In `packages/server/.env`, set `NODEMAILER_EMAIL` to your email/gmail and set your `NODEMAILER_EMAIL_PW` to the new generated PW.
 

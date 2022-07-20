@@ -57,6 +57,7 @@ export default {
       }
       const body = JSON.stringify({
         email: this.email,
+        redirectTo: this.$route.query.redirect_to || '',
       });
       const headers = {
         'Content-Type': 'application/json',
