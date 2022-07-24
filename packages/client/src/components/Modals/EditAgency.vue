@@ -7,7 +7,6 @@
       ref="modal"
       title="Edit Agency"
       @hidden="resetModal"
-      @ok="handleOk"
       :ok-disabled="$v.formData.$invalid"
     >
     <h3>{{this.agency && this.agency.name}}</h3>
@@ -23,6 +22,7 @@
               min=2
               v-model="formData.name"
               required
+              :placeholder="this.agency.name"
             ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -36,13 +36,14 @@
               max=8
               v-model="formData.abbreviation"
               required
+              :placeholder="this.agency.abbreviation"
             ></b-form-input>
         </b-form-group>
         <b-form-group
           label-for="agency-input"
         >
           <template slot="label">Parent Agency</template>
-          <v-select :options="agencies" label="name" :value="this.formData.parentAgency" v-model="formData.parentAgency">
+          <v-select :options="agencies" :placeholder="parentPlaceholder()" label="name" :value="this.formData.parentAgency" v-model="formData.parentAgency">
             <template #search="{attributes, events}">
               <input
                 class="vs__search"
@@ -50,6 +51,15 @@
                 v-on="events"
               />
             </template>
+          <!-- <template slot="label">Parent Agency</template>
+          <v-select :options="agencies" label="name" :value="this.formData.parentAgency" v-model="formData.parentAgency">
+            <template #search="{attributes, events}">
+              <input
+                class="vs__search"
+                v-bind="attributes"
+                v-on="events"
+              />
+            </template> -->
           </v-select>
         </b-form-group>
         <b-form-group
@@ -84,16 +94,30 @@
             required
           ></b-form-input>
         </b-form-group>
-        <form ref="form" @click="handleDelete">
+      </form>
+      <!-- <template v-slot:modal-footer>
+        <form ref="form" @click="handleDelete" class="d-inline-block" label-align="left">
           <span id="disabled-wrapper" class="d-inline-block" tabindex="0">
             <b-button v-bind:disabled="userRole !== 'admin'" style="pointer-events: none;" variant="danger">
-              Admin Delete Agency
+              Delete Agency
             </b-button>
           </span>
           <b-tooltip v-if="userRole !== 'admin'" target="disabled-wrapper" triggers="hover">
             You cannot delete an agency with children. Reassign child agencies to continue deletion.
           </b-tooltip>
         </form>
+        <b-button @click="handleCancel">Cancel</b-button>
+        <b-button @ok="handleOk" variant="primary">OK</b-button>
+      </template> -->
+      <form ref="form" @click="handleDelete" class="d-inline-block">
+          <span id="disabled-wrapper" class="d-inline-block" tabindex="0">
+            <b-button v-bind:disabled="(userRole !== 'admin') || (this.agency.name == this.loggedInUser.agency.name)" style="pointer-events: none;" variant="danger">
+              Delete Agency
+            </b-button>
+          </span>
+          <b-tooltip v-if="(userRole !== 'admin') || (this.agency.name == this.loggedInUser.agency.name)" target="disabled-wrapper" triggers="hover">
+            You cannot delete an agency with children. Reassign child agencies to continue deletion.
+          </b-tooltip>
       </form>
     </b-modal>
   </div>
@@ -147,6 +171,7 @@ export default {
     ...mapGetters({
       agencies: 'agencies/agencies',
       userRole: 'users/userRole',
+      loggedInUser: 'users/loggedInUser',
     }),
   },
   mounted() {
@@ -158,9 +183,14 @@ export default {
       updateAgencyAbbr: 'agencies/updateAgencyAbbr',
       updateAgencyParent: 'agencies/updateAgencyParent',
       deleteAgency: 'agencies/deleteAgency',
+      getAgencyParentName: 'agencies/getAgencyParentName',
     }),
     resetModal() {
       this.$emit('update:agency', null);
+    },
+    handleCancel() {
+      this.resetModal();
+      this.$bvModal.hide();
     },
     handleOk(bvModalEvt) {
       bvModalEvt.preventDefault();
@@ -187,6 +217,11 @@ export default {
         .catch((err) => {
           console.log(` ${err}`);
         });
+    },
+    async parentPlaceholder() {
+      const par = this.agency.parent;
+      console.log(`PARRRR - Edit Agency (1)~  ${par}`);
+      return this.getAgencyParentName({ parentId: par });
     },
     async handleSubmit() {
       if (this.$v.formData.$invalid) {

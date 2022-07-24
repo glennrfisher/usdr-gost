@@ -4,7 +4,7 @@ const router = express.Router({ mergeParams: true });
 const { requireAdminUser, requireUser, isPartOfAgency } = require('../lib/access-helpers');
 const {
     getAgency, getAgencies, setAgencyThresholds, createAgency, setAgencyName, setAgencyAbbr, setAgencyParent,
-    deleteAgency,
+    deleteAgency,getAgencyParentName, 
 } = require('../db');
 
 router.get('/', requireUser, async (req, res) => {
@@ -55,6 +55,14 @@ router.put('/parent/:agency', requireAdminUser, async (req, res) => {
     const { agency } = req.params;
 
     const result = await setAgencyParent(agency, Number(req.body.parentId));
+    res.json(result);
+});
+
+router.get('/parent/:agency', requireAdminUser, async (req, res) => {
+    const { agency } = req.params;
+    console.log(`agencies routes-  agency: (3)  ${agency}`);
+
+    const result = await getAgencyParentName(Number(agency));
     res.json(result);
 });
 

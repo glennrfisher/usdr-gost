@@ -58,6 +58,13 @@ export default {
       });
       dispatch('fetchAgencies');
     },
+    async getAgencyParentName({ dispatch }, { parentId }) {
+      console.log(`PAREEN IDDDDD: - agencies mods (2) ${parentId}`);
+      await fetchApi.get(`/api/organizations/:organizationId/agencies/parent/${parentId}`, {
+        parentId,
+      });
+      dispatch('fetchAgencies');
+    },
   },
   mutations: {
     SET_AGENCIES(state, agencies) {

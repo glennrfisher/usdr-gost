@@ -605,6 +605,24 @@ function setTenantDisplayName(id, display_name) {
         .update({ display_name });
 }
 
+function getAgencyParentName(agen_parentId) {
+    console.log(`agen_parentId in index.jss  (4) ${agen_parentId}`);
+    let result;
+    knex(TABLES.agencies)
+        .where('id', agen_parentId)
+        .select('name')
+        .then(data => {
+            console.log(data);
+            console.log(`data in promise     ${data[0].name}`);
+            result = data[0].name;
+            console.log(`result ===  ${result}`);
+            return result;
+        }).catch((err) => console.log(err));
+    // console.log(`QUERYY   ${query}`);
+    console.log(`Result outside of query ===  ${result}`);
+    // return result;
+}
+
 async function createRecord(tableName, row) {
     return knex(tableName).insert(row);
 }
@@ -698,6 +716,7 @@ module.exports = {
     setAgencyName,
     setAgencyAbbr,
     setAgencyParent,
+    getAgencyParentName,
     setTenantDisplayName,
     createKeyword,
     deleteKeyword,
