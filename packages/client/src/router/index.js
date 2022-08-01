@@ -40,18 +40,10 @@ const routes = [
           requiresAuth: true,
         },
       },
-       {
+      {
         path: '/RecentActivity',
         name: 'RecentActivity',
         component: () => import('../views/RecentActivity.vue'),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-       {
-        path: '/UpcomingClosingDates',
-        name: 'UpcomingClosingDates',
-        component: () => import('../views/UpcomingClosingDates.vue'),
         meta: {
           requiresAuth: true,
         },
