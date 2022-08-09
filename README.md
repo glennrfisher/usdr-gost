@@ -71,8 +71,15 @@ CREATE DATABASE usdr_grants_test;
 
 4). Setup ENVs
 
-Copy packages/client & packages/server `.env.example` to `.env` and
-Update packages/client & server `.env`
+Copy packages/client & packages/server `.env.example` to `.env`
+
+```
+> cp packages/client/.env.example packages/client/.env
+> cp packages/server/.env.example packages/server/.env
+```
+
+
+Then export the environment variables
 
 ```
 > cd packages/client && export $(cat .env)
@@ -89,7 +96,7 @@ Set environment variable pointing to local postgres DB, this is used for migrati
 
 4.1). Setup Gmail
 
-Visit: https://myaccount.google.com/apppasswords and set up an "App Password" (see screenshot below) 
+Visit: https://myaccount.google.com/apppasswords and set up an "App Password" (see screenshot below). *Note: Select "Mac" even if you're not using a Mac.* 
 
 In `packages/server/.env`, set `NODEMAILER_EMAIL` to your email/gmail and set your `NODEMAILER_EMAIL_PW` to the new generated PW.
 
@@ -108,7 +115,7 @@ If running into `Error: Invalid login: 535-5.7.8 Username and Password not accep
 
 In server workspace, run migrations:
 
-**_NOTE:_** In `server/seeds/dev/index.js`, update the adminList by replacing `CHANGEME@GMAIL.COM` with your email **_to be able to login to the system_**.
+**_NOTE:_** In `server/seeds/dev/index.js`, update the adminList by replacing `CHANGEME@GMAIL.COM` with your email **_to be able to login to the system_**. *Use lower-case email address.*
 Then run seeds:
 
 ```
@@ -125,9 +132,7 @@ Now you should be able to serve the frontend.
 **_*Ensure using node v14*_**
 
 ```
-> nvm use v14.19.0
-> cd packages/client
-> yarn serve
+> yarn start:client
 ```
 
 6.1). Run Server (Terminal 2)
@@ -139,9 +144,7 @@ Now you should be able to serve the backend.
 **_Ensure using node v14_**
 
 ```
-> nvm use v14.19.0
-> cd packages/server
-> yarn serve
+> yarn start:server
 ```
 
 **NOTE:** if error references AWS (see screenshot below) then run `> unset AWS_ACCESS_KEY_ID`. The application will try to use AWS Simple Email Service (SES) if `AWS_ACCESS_KEY_ID` is found as an env var.
@@ -247,6 +250,32 @@ After installing depedencies, IntelliJ should start using eslint automatically:
 > By default, IntelliJ IDEA marks the detected errors and warnings based on the severity levels from the ESLint configuration
 > https://www.jetbrains.com/help/idea/eslint.html#ws_js_linters_eslint_install
 
+# Testing
+
+## Server
+
+```
+> cd packages/server
+> yarn test
+  ...
+
+OR
+
+> yarn test:db
+  ...
+> yarn test:apis
+  ...
+> yarn test:email
+  ...
+```
+
+## Client
+
+```
+
+```
+
+
 # Deployment
 
 ## Render
@@ -262,6 +291,10 @@ After installing depedencies, IntelliJ should start using eslint automatically:
 3. Update web service environment variables
 
 ![update-web-env-vars](docs/img/update-web-env-vars.png)
+
+**NOTE:** Don't set `NODE_ENV=production` else NPM dev deps will not be installed and prod deployments will fail [(source)](https://github.com/vuejs/vue-cli/issues/5107#issuecomment-586701382)
+
+![prod-env-error](docs/img/prod-env-error.png)
 
 ```
 POSTGRES_URL=<POSTGRE_CONNECTION_STRING> # Render Internal connection string ie postgres://cares_opportunity_user:<pass>@<domain>/cares_opportunity_1e53
