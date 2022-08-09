@@ -204,14 +204,16 @@ export default {
         'Are you sure you want to delete this agency? This cannot be undone. If the agency has children,'
       + ' reassign child agencies to continue deletion.',
       ).then(() => {
-        this.deleteAgency({
-          agencyId: this.agency.id,
-          parent: this.agency.parent,
-          name: this.agency.name,
-          abbreviation: this.agency.abbreviation,
-          warningThreshold: this.formData.warningThreshold,
-          dangerThreshold: this.formData.dangerThreshold,
-        });
+        if (this.$bvModal.msgBoxConfirm() === true) {
+          this.deleteAgency({
+            agencyId: this.agency.id,
+            parent: this.agency.parent,
+            name: this.agency.name,
+            abbreviation: this.agency.abbreviation,
+            warningThreshold: this.formData.warningThreshold,
+            dangerThreshold: this.formData.dangerThreshold,
+          });
+        }
         this.resetModal();
       })
         .catch((err) => {

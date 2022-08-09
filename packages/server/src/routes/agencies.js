@@ -4,7 +4,7 @@ const router = express.Router({ mergeParams: true });
 const { requireAdminUser, requireUser, isPartOfAgency } = require('../lib/access-helpers');
 const {
     getAgency, getAgencies, setAgencyThresholds, createAgency, setAgencyName, setAgencyAbbr, setAgencyParent,
-    deleteAgency,getAgencyParentName, 
+    deleteAgency, getAgencyParentName,
 } = require('../db');
 
 router.get('/', requireUser, async (req, res) => {

@@ -661,16 +661,15 @@ function getAgencyParentName(agen_parentId) {
     knex(TABLES.agencies)
         .where('id', agen_parentId)
         .select('name')
-        .then(data => {
+        .then((data) => {
             console.log(data);
             console.log(`data in promise     ${data[0].name}`);
             result = data[0].name;
             console.log(`result ===  ${result}`);
             return result;
-        }).catch((err) => console.log(err));
-    // console.log(`QUERYY   ${query}`);
+        })
+        .catch((err) => console.log(err));
     console.log(`Result outside of query ===  ${result}`);
-    // return result;
 }
 
 async function createRecord(tableName, row) {
