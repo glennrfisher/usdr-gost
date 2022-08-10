@@ -73,6 +73,56 @@ describe('db', () => {
         });
     });
 
+    context('deleteAgency', () => {
+        it('deletes agency', async () => {
+            // arrange  #done in fixtures
+            // act
+            const result = await db.deleteAgency();
+            // assert
+            expect(result.length).to.equal(2);
+        });
+    });
+
+    context('setAgencyAbbr', () => {
+        it('sets new agency abbreviation', async () => {
+            // arrange  #done in fixtures
+            // act
+            const result = await db.setAgencyAbbr();
+            // assert
+            expect(result.length).to.equal(2);
+        });
+    });
+
+    context('setAgencyParent', () => {
+        it('sets new agency parent', async () => {
+            // arrange  #done in fixtures
+            // act
+            const result = await db.setAgencyParent();
+            // assert
+            expect(result.length).to.equal(2);
+        });
+    });
+
+    context('setAgencyName', () => {
+        it('sets new agency name', async () => {
+            // arrange  #done in fixtures
+            // act
+            const result = await db.setAgencyName();
+            // assert
+            expect(result.length).to.equal(2);
+        });
+    });
+
+    context('setAgencyThresholds', () => {
+        it('sets new agency thresholds', async () => {
+            // arrange  #done in fixtures
+            // act
+            const result = await db.setAgencyThresholds();
+            // assert
+            expect(result.length).to.equal(2);
+        });
+    });
+
     context('getClosestGrant', () => {
         it('gets closest grants', async () => {
             // arrange  #done in fixtures
